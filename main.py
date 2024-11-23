@@ -4,7 +4,7 @@ from utils.txt_file import TXTFile
 from gui.window_params import WindowParams
 from tkinter import messagebox
 import global_vars
-from services.music_letter import MusicLetter
+from services.music_lyrics import MusicLyrics
 
 class MusicListApp:
     def __init__(self, master):
@@ -68,8 +68,8 @@ class MusicListApp:
 
         messagebox.showinfo("Salvo", f"Arquivos Salvos em /musics \n {files_names}")
 
-    def generate_letter(self, url):
-        ml = MusicLetter(url)
+    def generate_lyrics(self, url):
+        ml = MusicLyrics(url)
         lyrics_text = ml.find()
 
         return lyrics_text

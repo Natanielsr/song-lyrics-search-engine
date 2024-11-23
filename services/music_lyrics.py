@@ -1,7 +1,7 @@
 from utils.html_fetcher import HtmlFetcher
 from bs4 import BeautifulSoup
 
-class MusicLetter:
+class MusicLyrics:
     
     def __init__(self, url):
         self.url = url

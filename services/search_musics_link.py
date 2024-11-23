@@ -36,7 +36,7 @@ class SearchMusicsLink:
         # Encontrar o primeiro link
         links = div.find_elements(By.TAG_NAME, "a")
 
-        links_tuple = []
+        links_list= []
         # Processar todos os links encontrados
         for link in links:
             # Imprimir texto e URL de cada link
@@ -44,9 +44,9 @@ class SearchMusicsLink:
                 link_name = str(link.text)
                 new_link_name = link_name[:-16]  # Remove os últimos 16 caracteres
                 tuple = (new_link_name, str(link.get_attribute("href")))
-                links_tuple.append(tuple)
+                links_list.append(tuple)
 
         # Feche o navegador
         driver.quit()
 
-        return links_tuple
+        return links_list
