@@ -5,6 +5,7 @@ from gui.window_params import WindowParams
 from tkinter import messagebox
 import global_vars
 from services.music_lyrics import MusicLyrics
+from services.search_musics_link import SearchMusicsLink
 
 class MusicListApp:
     def __init__(self, master):
@@ -12,7 +13,8 @@ class MusicListApp:
         self.master.title("Lista de Músicas")
         WindowParams.set_defaults(self.master, 600, 400)
 
-        add_music = AddMusicGUI(self.master)
+        search_music_link = SearchMusicsLink()
+        add_music = AddMusicGUI(self.master, search_music_link)
         # Cria um botão que usa lambda para passar o valor do Entry
         botao = tk.Button(self.master, text="Adicionar Música", command=add_music.open_new_window)
         botao.pack(pady=20)
@@ -60,7 +62,7 @@ class MusicListApp:
         for name, link in global_vars.music_data:
             file_name = f'{i} - {name}'
 
-            lyrics_text = self.generate_letter(link)
+            lyrics_text = self.generate_lyrics(link)
             txt.save(file_name,lyrics_text)
 
             files_names += f'{file_name}.txt, '

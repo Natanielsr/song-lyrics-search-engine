@@ -2,11 +2,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import logging
+import time
 
 class SearchMusicsLink:
 
-    def search(self, searchText):
-        
+    def __init__(self):
+        start = time.time()
+        print(f"Starting Driver...")
         # Desabilitar logs do Selenium
         logging.getLogger('selenium').setLevel(logging.ERROR)
 
@@ -18,20 +20,38 @@ class SearchMusicsLink:
         chrome_options.add_argument("--disable-gpu")  # Desabilitar GPU, se necessário
         chrome_options.add_argument("--log-level=3")  # Suprime logs informativos
 
-        # Iniciar o driver com as opções headless
-        driver = webdriver.Chrome(options=chrome_options)
+        chrome_options.add_argument("--disable-extensions")
+        chrome_options.add_argument("--disable-infobars")
 
-        #searchText = 'noites traiçoeiras'
+        # Iniciar o driver com as opções headless
+        self.driver = webdriver.Chrome(options=chrome_options)
+
+        end = time.time()
+        execution_time_ms = (end - start) * 1000  # Converter para milissegundos
+        print(f"Driver started at : {execution_time_ms:.3f} ms")
+
+        start = time.time()
+
+    def search(self, searchText):
+        start = time.time()
+
         # Acesse a página
         searchLink = 'https://www.letras.mus.br/?q='+searchText
         print(searchLink)
-        driver.get(searchLink)
+       
+        self.driver.get(searchLink)
 
         # Aguarde o carregamento da div (opcional)
-        driver.implicitly_wait(10)
+        self.driver.implicitly_wait(1)
+
+        end = time.time()
+        execution_time_ms = (end - start) * 1000  # Converter para milissegundos
+        print(f"Tempo de busca: {execution_time_ms:.3f} ms")
+
+        start = time.time()
 
         # Encontre a div com a classe cse-search-results
-        div = driver.find_element(By.CLASS_NAME, 'gsc-expansionArea')
+        div = self.driver.find_element(By.CLASS_NAME, 'gsc-expansionArea')
 
         # Encontrar o primeiro link
         links = div.find_elements(By.TAG_NAME, "a")
@@ -46,7 +66,19 @@ class SearchMusicsLink:
                 tuple = (new_link_name, str(link.get_attribute("href")))
                 links_list.append(tuple)
 
-        # Feche o navegador
-        driver.quit()
+        end = time.time()
+        execution_time_ms = (end - start) * 1000  # Converter para milissegundos
+        print(f"Tempo de conversão: {execution_time_ms:.3f} ms")
 
+        start = time.time()
+
+        #self.driver.close()
+        # Feche o navegador
+        #driver.quit()
+
+        end = time.time()
+        execution_time_ms = (end - start) * 1000  # Converter para milissegundos
+        print(f"Tempo para fechar: {execution_time_ms:.3f} ms")
+
+        
         return links_list
